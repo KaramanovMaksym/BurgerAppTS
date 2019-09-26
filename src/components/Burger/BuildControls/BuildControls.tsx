@@ -9,15 +9,24 @@ const controls = [
   {label: 'Meat', type: 'meat'},
 ]
 interface Props {
-
+  ingredientAdded: Function
+  ingredientRemoved: Function
+  disable: {[ingredient: string]: boolean|number}
 }
 
-const buildControls: React.FC<Props> = (props) => (
+const buildControls: React.FC<Props> = props => (
   <div className={classes.BuildControls}>
-    { controls.map((ctrl) => {
-      return <BuildControl key={ctrl.label} label={ctrl.label} />
-    }) }
-
+    {controls.map(ctrl => {
+      return (
+        <BuildControl
+          key={ctrl.label}
+          label={ctrl.label}
+          added={() => props.ingredientAdded(ctrl.type)}
+          removed={() => props.ingredientRemoved(ctrl.type)}
+          disable={props.disable[ctrl.type]}
+        />
+      )
+    })}
   </div>
 )
 
