@@ -12,10 +12,13 @@ interface Props {
   ingredientAdded: Function
   ingredientRemoved: Function
   disable: {[ingredient: string]: boolean|number}
+  price: number
 }
 
 const buildControls: React.FC<Props> = props => (
   <div className={classes.BuildControls}>
+  <p>Current Price: <strong>{props.price.toFixed(2)}</strong> </p>
+
     {controls.map(ctrl => {
       return (
         <BuildControl

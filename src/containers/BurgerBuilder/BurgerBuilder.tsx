@@ -15,7 +15,7 @@ interface State {
 
 const INGREDIENT_PRICES: {[ingredient: string]: number} = {
   salad: 0.5,
-  chese: 0.6,
+  cheese: 0.6,
   meat: 1.5,
   bacon: 0.8
 }
@@ -48,7 +48,6 @@ export default class BurgerBuilder extends Component<Props, State> {
   }
 
   removeIngredientHandler = (type: string) => {
-    debugger
     const oldCount = this.state.ingredients[type]
     if (oldCount <= 0) {
       return
@@ -80,6 +79,7 @@ export default class BurgerBuilder extends Component<Props, State> {
           ingredientAdded={this.addIngredientHandler}
           ingredientRemoved={this.removeIngredientHandler}
           disable={disableInfo}
+          price={this.state.totalPrice}
           />
       </Aux>
     )
