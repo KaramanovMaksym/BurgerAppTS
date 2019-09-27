@@ -6,6 +6,7 @@ interface Props {
   ingredients: any
   purchaseCancelled: any
   purchaseContinued: any
+  price: number
 }
 
 const orderSummary: React.FC<Props> = (props) => {
@@ -27,6 +28,7 @@ const orderSummary: React.FC<Props> = (props) => {
       <ul>
         {ingredientSummary}
       </ul>
+      <p><strong>Total price: {props.price.toFixed(2)}$</strong></p>
       <p>Continue to Checkout?</p>
       <Button btnType='Danger' clicked={props.purchaseCancelled}>CANCEL</Button>
       <Button btnType='Success' clicked={props.purchaseContinued}>CONTINUE</Button>
