@@ -14,6 +14,7 @@ interface Props {
   disable: {[ingredient: string]: boolean|number}
   price: number
   purchasable: boolean
+  ordered: any
 }
 
 const buildControls: React.FC<Props> = props => (
@@ -33,7 +34,11 @@ const buildControls: React.FC<Props> = props => (
         />
       )
     })}
-    <button className={classes.OrderButton} disabled={!props.purchasable}>
+    <button
+      className={classes.OrderButton}
+      disabled={!props.purchasable}
+      onClick={props.ordered}
+    >
       ORDER NOW
     </button>
   </div>

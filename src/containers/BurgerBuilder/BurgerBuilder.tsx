@@ -14,6 +14,7 @@ interface State {
   }
   totalPrice: number
   purchasable: boolean
+  purchasing: boolean
 }
 
 const INGREDIENT_PRICES: {[ingredient: string]: number} = {
@@ -32,7 +33,8 @@ export default class BurgerBuilder extends Component<Props, State> {
       meat: 0
     },
     totalPrice: 4,
-    purchasable: false
+    purchasable: false,
+    purchasing: false
   }
 
   updatePurchaseState (ingredients: {[ingredient: string]: number}) {
@@ -95,7 +97,7 @@ export default class BurgerBuilder extends Component<Props, State> {
     }
     return (
       <Aux>
-        <Modal >
+        <Modal show={this.state.purchasing} modalClose={this.purchaseCancelHandler} >
           <OrderSummary ingredients={this.state.ingredients} />
         </Modal>
         <Burger ingredients={this.state.ingredients}/>
@@ -105,9 +107,18 @@ export default class BurgerBuilder extends Component<Props, State> {
           disable={disableInfo}
           price={this.state.totalPrice}
           purchasable={this.state.purchasable}
+          ordered={this.purchaseHandler}
           />
 
       </Aux>
     )
+  }
+
+  purchaseHandler = () => {
+    this.setState({purchasing: true})
+  }
+
+  purchaseCancelHandler = () => {
+    this.setState({purchasing: false})
   }
 }
