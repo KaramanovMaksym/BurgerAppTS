@@ -11,6 +11,7 @@ interface State {
     [ingredient: string]: number
   }
   totalPrice: number
+  purchasable: boolean
 }
 
 const INGREDIENT_PRICES: {[ingredient: string]: number} = {
@@ -28,7 +29,20 @@ export default class BurgerBuilder extends Component<Props, State> {
       cheese: 0,
       meat: 0
     },
-    totalPrice: 4
+    totalPrice: 4,
+    purchasable: false
+  }
+
+  updatePurchaseState (ingredients: {[ingredient: string]: number}) {
+
+    const sum = Object.keys(ingredients)
+        .map( igKey => {
+          return ingredients[igKey]
+        })
+        .reduce( (sum, el) => {
+          return sum + el
+        }, 0)
+    this.setState({purchasable: sum > 0})
   }
 
   addIngredientHandler = (type: string) => {
@@ -45,6 +59,8 @@ export default class BurgerBuilder extends Component<Props, State> {
       ingredients: updatedIngredients,
       totalPrice: newPrice
     })
+    debugger
+    this.updatePurchaseState(updatedIngredients)
   }
 
   removeIngredientHandler = (type: string) => {
@@ -64,7 +80,10 @@ export default class BurgerBuilder extends Component<Props, State> {
       ingredients: updatedIngredients,
       totalPrice: newPrice
     })
+    this.updatePurchaseState(updatedIngredients)
+
   }
+
   render() {
     const disableInfo: {[ingredient: string]: number|boolean} = {
       ...this.state.ingredients
@@ -80,6 +99,7 @@ export default class BurgerBuilder extends Component<Props, State> {
           ingredientRemoved={this.removeIngredientHandler}
           disable={disableInfo}
           price={this.state.totalPrice}
+          purchasable={this.state.purchasable}
           />
       </Aux>
     )
