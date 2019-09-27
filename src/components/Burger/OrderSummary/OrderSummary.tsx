@@ -1,8 +1,11 @@
 import React from 'react'
 import Aux from '../../../hoc/Aux'
+import Button from '../../UI/Button/Button'
 
 interface Props {
   ingredients: any
+  purchaseCancelled: any
+  purchaseContinued: any
 }
 
 const orderSummary: React.FC<Props> = (props) => {
@@ -25,6 +28,8 @@ const orderSummary: React.FC<Props> = (props) => {
         {ingredientSummary}
       </ul>
       <p>Continue to Checkout?</p>
+      <Button btnType='Danger' clicked={props.purchaseCancelled}>CANCEL</Button>
+      <Button btnType='Success' clicked={props.purchaseContinued}>CONTINUE</Button>
     </Aux>
   )
 }
