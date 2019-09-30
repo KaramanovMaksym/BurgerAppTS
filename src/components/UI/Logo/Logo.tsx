@@ -6,7 +6,7 @@ interface Props {
 
 }
 
-const logo: React.FC<Props> = () => (
+const logo: React.FC<Props> = (props) => (
   <div className={classes.Logo}>
     <img src={burgerLogo} alt="MyBurger"/>
   </div>

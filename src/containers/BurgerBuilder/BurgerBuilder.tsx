@@ -63,7 +63,6 @@ export default class BurgerBuilder extends Component<Props, State> {
       ingredients: updatedIngredients,
       totalPrice: newPrice
     })
-    debugger
     this.updatePurchaseState(updatedIngredients)
   }
 
