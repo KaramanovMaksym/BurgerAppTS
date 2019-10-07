@@ -5,6 +5,7 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
 import axios from '../../axios-orders'
+import Spinner from '../../components/UI/Spinner/Spinner'
 
 interface Props {
 
@@ -16,6 +17,7 @@ interface State {
   totalPrice: number
   purchasable: boolean
   purchasing: boolean
+  loading: boolean
 }
 
 const INGREDIENT_PRICES: {[ingredient: string]: number} = {
@@ -35,7 +37,8 @@ export default class BurgerBuilder extends Component<Props, State> {
     },
     totalPrice: 4,
     purchasable: false,
-    purchasing: false
+    purchasing: false,
+    loading: false
   }
 
   updatePurchaseState (ingredients: {[ingredient: string]: number}) {
@@ -95,14 +98,19 @@ export default class BurgerBuilder extends Component<Props, State> {
     for (const key in disableInfo) {
         disableInfo[key] = disableInfo[key] <= 0
     }
-    return (
-      <Aux>
-        <Modal show={this.state.purchasing} modalClose={this.purchaseCancelHandler} >
-          <OrderSummary
+
+    let orderSummary = <OrderSummary
             ingredients={this.state.ingredients}
             purchaseCancelled={this.purchaseCancelHandler}
             purchaseContinued={this.purchaseContinueHandler}
             price={this.state.totalPrice} />
+    if (this.state.loading) {
+      orderSummary = <Spinner />
+    }
+    return (
+      <Aux>
+        <Modal show={this.state.purchasing} modalClose={this.purchaseCancelHandler} >
+          {orderSummary}
         </Modal>
         <Burger ingredients={this.state.ingredients}/>
         <BuildControls
@@ -127,7 +135,7 @@ export default class BurgerBuilder extends Component<Props, State> {
   }
 
   purchaseContinueHandler = () => {
-    // alert('You continue!')
+    this.setState({loading: true})
     const order = {
       ingredients: this.state.ingredients,
       price: this.state.totalPrice.toFixed(2),
@@ -143,7 +151,7 @@ export default class BurgerBuilder extends Component<Props, State> {
       deliveryMethod: 'fastest'
     }
     axios.post('/orders.json', order)
-      .then(resp => console.log(resp))
-      .catch(err => console.log(err))
+      .then(resp => this.setState({loading: false, purchasing: false}))
+      .catch(err => this.setState({loading: false, purchasing: false}))
   }
 }
