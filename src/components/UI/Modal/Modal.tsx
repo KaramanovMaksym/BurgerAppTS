@@ -5,7 +5,7 @@ import Backdrop from '../Backdrop/Backdrop'
 
 
 interface Props {
-  show: boolean
+  show: boolean | null
   modalClose: any
 }
 
